@@ -3,3 +3,8 @@ https://cad.onshape.com/documents/28683f09a664caa3b74c36b6/w/c72f66f04a3e7ff1ef8
 
 ^^^^
 Onshape link for Carlaunch, more regularly updated than pushed GitHub files, but may be unstable.
+
+
+https://github.com/ThunderFly-aerospace/TF-SIMPLEPLATFORM
+
+ThunderFly carlaunch design
