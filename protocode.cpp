@@ -29,10 +29,10 @@ Servo bservo;
 // sd
 const int chipSelect = 5;
 // hx711
-const int dout711 = 14;
-const int sck711 = 15;
+const int dout711 = 3;
+const int sck711 = 2;
 
-HX711 scale; 
+HX711 scale; // pixel is 207 grams, w case say 225
 
 void setup() {
   // put your setup code here, to run once:
@@ -61,7 +61,22 @@ void servo() {
 
 
 void loop() {
-
+  if (scale.is_ready()) {
+    scale.set_scale();    
+    Serial.println("Tare... remove any weights from the scale.");
+    delay(5000);
+    scale.tare();
+    Serial.println("Tare done...");
+    Serial.print("Place a known weight on the scale...");
+    delay(5000);
+    long reading = scale.get_units(10);
+    Serial.print("Result: ");
+    Serial.println(reading);
+  } 
+  else {
+    Serial.println("HX711 not found.");
+  }
+  delay(1000);
 }
 
 
