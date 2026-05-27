@@ -14,7 +14,3 @@ the holy bible of autogyro design. always reference this
 
 
 
-
-code resources:
-- https://randomnerdtutorials.com/arduino-load-cell-hx711/ load cell
-- https://controllerstech.com/interface-sd-card-with-arduino-using-spi/ sd card
