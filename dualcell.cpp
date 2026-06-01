@@ -7,6 +7,8 @@
 #include <SD.h>
 #include <SPI.h>
 
+#include <StopWatch.h>
+
 
 
 //  DONT FORGET TO MAKE WIRING SECURE!!!!!!!!!!!
@@ -38,6 +40,8 @@ const int Rsck711 = 5;
 HX711 Rscale; 
 HX711 Bscale;
 
+StopWatch sw_micros(StopWatch::MICROS);
+
 void setup() {
   // put your setup code here, to run once:
   /*aservo.attach(12);
@@ -58,8 +62,9 @@ void setup() {
     delay(5000);
     Rscale.tare();
     Bscale.tare();
-    Serial.println("Tare done, read in 5 seconds...");
-    delay(5000);
+    Serial.println("Tare done, read in 3 seconds...");
+    delay(3000);
+    sw_micros.start();
   } else {
     Serial.println("hx711 not found");
   }
@@ -81,9 +86,11 @@ void servo() {
 void loop() {
   
     Serial.print("Rcell result: ");
-    Serial.print(Rscale.get_units(5), 1);
+    Serial.print(Rscale.get_units(1), 1);
     Serial.print(" | Bcell result: ");
-    Serial.println(Bscale.get_units(5), 1);
+    Serial.print(Bscale.get_units(1), 1);
+    Serial.print(" | time elapsed: ");
+    Serial.println(sw_micros.elapsed() / 1000);
   
 }
 
