@@ -52,7 +52,7 @@ void setup() {
 
   
   if (Rscale.is_ready(), Bscale.is_ready()) {
-    Rscale.set_scale(-411.9835);   
+    Rscale.set_scale(-409.0174);   
     Bscale.set_scale(-458.0696);
     Serial.println("Tare...");
     delay(5000);
