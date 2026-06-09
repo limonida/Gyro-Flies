@@ -7,6 +7,8 @@
 #include <SD.h>
 #include <SPI.h>
 
+#include <StopWatch.h>
+
 
 
 //  DONT FORGET TO MAKE WIRING SECURE!!!!!!!!!!!
@@ -29,10 +31,17 @@ Servo bservo;
 // sd
 const int chipSelect = 5;
 // hx711
-const int dout711 = 3;
-const int sck711 = 2;
+const int Bdout711 = 3;
+const int Bsck711 = 2;
 
-HX711 scale; // pixel is 207 grams, w case say 225
+const int Rdout711 = 6;
+const int Rsck711 = 5;
+
+HX711 Rscale; 
+HX711 Bscale;
+
+StopWatch sw_micros(StopWatch::MICROS);
+int i = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -42,9 +51,24 @@ void setup() {
   bservo.write(0);
   */
   Serial.begin(57600); delay(10);
-  scale.begin(dout711, sck711);
-  
+  Rscale.begin(Rdout711, Rsck711);
+  Bscale.begin(Bdout711, Bsck711);
 
+
+  
+  if (Rscale.is_ready(), Bscale.is_ready()) {
+    Rscale.set_scale(-409.0174);   
+    Bscale.set_scale(-458.0696);
+    Serial.println("Tare...");
+    delay(5000);
+    Rscale.tare();
+    Bscale.tare();
+    Serial.println("Tare done, read in 3 seconds...");
+    delay(3000);
+    sw_micros.start();
+  } else {
+    Serial.println("hx711 not found");
+  }
 }
 
 void servo() {
@@ -61,27 +85,36 @@ void servo() {
 
 
 void loop() {
-  if (scale.is_ready()) {
-    scale.set_scale();    
-    Serial.println("Tare... remove any weights from the scale.");
-    delay(5000);
-    scale.tare();
-    Serial.println("Tare done...");
-    Serial.print("Place a known weight on the scale...");
-    delay(5000);
-    long reading = scale.get_units(10);
-    Serial.print("Result: ");
-    Serial.println(reading);
-  } 
-  else {
-    Serial.println("HX711 not found.");
-  }
-  delay(1000);
+    if (i == 0) {
+      delay(248);
+      Serial.print("Rcell result: ");
+      Serial.print(Rscale.get_units(1), 1);
+      Serial.print(" | Bcell result: ");
+      Serial.print(Bscale.get_units(1), 1);
+      Serial.print(" | time elapsed: ");
+      Serial.println(sw_micros.elapsed() / 1000);
+      delay(248);
+      i = i + 1;
+    } else {
+      Serial.print("Rcell result: ");
+      Serial.print(Rscale.get_units(1), 1);
+      Serial.print(" | Bcell result: ");
+      Serial.print(Bscale.get_units(1), 1);
+      Serial.print(" | time elapsed: ");
+      Serial.println((sw_micros.elapsed() / 1000), 1);
+      delay(247.9999925);
+    }
+  
 }
 
 
+// pixel 10 pro full weight: 242g
+// redcell: 99700 for 242g, cal fac = -411.9835
+
 //  DONT FORGET TO MAKE WIRING SECURE!!!!!!!!!!!!
 
+// bcell run 1: 110650 (normal down)
+// bcell: 110852 for 242g, cal fac = -458.0696
 
 ////// !!! remember for adc to use pull-up resistors !!!
 //    - might be worth it to get dedicated ones if data is too noisy
