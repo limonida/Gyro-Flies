@@ -10,6 +10,9 @@ https://www.faa.gov/sites/faa.gov/files/regulations_policies/handbooks_manuals/a
 
 the holy bible of autogyro design. always reference this
 
+http://www.w-p.dds.nl/bookaut/
+
+super valuable resource esp for aerodynamics and equations
 
 
 
